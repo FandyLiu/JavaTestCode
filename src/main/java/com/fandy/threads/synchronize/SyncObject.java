@@ -1,12 +1,14 @@
 package com.fandy.threads.synchronize;
 
+import java.util.Date;
+
 /**
  * @author: fandy
  * @date: 2018/10/25
  * @description:
  */
 public class SyncObject {
-    class Account {
+    static class Account {
         private String name;
         private float amount;
 
@@ -47,7 +49,7 @@ public class SyncObject {
         }
     }
 
-    class AccountOperator implements Runnable {
+    static class AccountOperator implements Runnable {
         private Account account;
 
         public AccountOperator(Account account) {
@@ -59,9 +61,22 @@ public class SyncObject {
             synchronized (account) {
                 account.deposit(500);
                 account.withdraw(500);
-                System.out.println(Thread.currentThread() + ":" + account.getBalance());
+                System.out.println("time" + new Date().getTime() + "-----" +Thread.currentThread() + ":" + account.getBalance());
             }
         }
     }
 
+    public static void main(String[] args) {
+        SyncObject.Account account = new SyncObject.Account("zhang san", 10000.0f);
+        SyncObject.AccountOperator accountOperator = new SyncObject.AccountOperator(account);
+
+        final int THREAD_NUM = 5;
+        Thread threads[] = new Thread[THREAD_NUM];
+        for (int i = 0; i < THREAD_NUM; i ++) {
+            System.out.println("line" + 1 + "-----"+ new Date().getTime() + "-----"+  "thread" + i);
+            threads[i] = new Thread(accountOperator, "Thread" + i);
+            threads[i].start();
+            System.out.println("line" + 2 + "-----"+ new Date().getTime() + "-----"+  "thread" + i);
+        }
+    }
 }

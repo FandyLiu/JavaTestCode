@@ -11,17 +11,16 @@ public class SyncBlockTest {
 
 
 
-    @Test(expected = InterruptedException.class, timeout = 100)
-    public void test1() throws RuntimeException {
-        throw new RuntimeException();
+    @Test
+    public void test1() throws InterruptedException {
 
-//        SyncBlock1 syncBlock = new SyncBlock1();
-//        Thread thread1 = new Thread(syncBlock, "syncBlock1");
-//        Thread thread2 = new Thread(syncBlock, "syncBlock2");
-//        thread1.start();
-//        thread2.start();
-//        thread1.join();
-//        thread2.join();
+        SyncBlock1 syncBlock = new SyncBlock1();
+        Thread thread1 = new Thread(syncBlock, "syncBlock1");
+        Thread thread2 = new Thread(syncBlock, "syncBlock2");
+        thread1.start();
+        thread2.start();
+        thread1.join();
+        thread2.join();
         // 从运行结果可以看出 两个线程是互斥的, thread1 先执行完之后, thread2 才会执行
         // 因为在执行synchronized代码块的时候,会锁定当前对象. 只有代码执行完才会释放该对象的锁
     }
@@ -49,6 +48,9 @@ public class SyncBlockTest {
         thread2.join();
         // 当一个线程访问对象的一个synchronized(this)同步代码块时，另一个线程仍然可以访问该对象中的非synchronized(this)同步代码块。
     }
+
+
+
 
 
 }
